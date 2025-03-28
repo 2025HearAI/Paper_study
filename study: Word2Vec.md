@@ -31,5 +31,5 @@ $$
 Q = N \times D + N \times D \times H + H \times V
 $$
 
-여기서 가장 복잡한 항은 **\( H \times V \)**이다.  
+여기서 가장 복잡한 항은 `H × V`이다.  
 이 복잡도를 줄이기 위해 **계층적 소프트맥스(hierarchical softmax)**를 사용하는 방법이 제안되었다.
