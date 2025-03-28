@@ -33,3 +33,19 @@ $$
 
 여기서 가장 복잡한 항은 `H × V`이다.  
 이 복잡도를 줄이기 위해 **계층적 소프트맥스(hierarchical softmax)**를 사용하는 방법이 제안되었다.
+
+### 2.2 Recurrent Neural Net Language Model (RNNLM)
+![RNNLM](https://github.com/user-attachments/assets/97cebe82-fac8-4d36-8b8a-545955b3b31c)
+
+Feedforward NNLM은 **고정된 길이의 문맥**만 고려할 수 있다는 한계를 가진다.  
+이를 극복하기 위해 **Recurrent Neural Network Language Model (RNNLM)**이 제안되었다.
+
+RNN 모델은 **Projection Layer가 없고**, **Input Layer**, **Hidden Layer**, **Output Layer**로 구성된다.  
+이 모델의 핵심은 **은닉층(Hidden Layer)**이 **자기 자신과 시간 지연된 연결을 통해 순환적으로 연결**된다는 점이다.  
+즉, **이전 시간의 은닉 상태**와 **현재 입력**을 기반으로 은닉 상태를 업데이트함으로써, *short-term memory*를 형성할 수 있다.
+
+RNN 모델의 학습 샘플당 계산 복잡도는 다음과 같다:
+
+$$
+Q = H \times H + H \times V
+$$
