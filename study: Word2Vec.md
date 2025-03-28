@@ -49,3 +49,14 @@ RNN 모델의 학습 샘플당 계산 복잡도는 다음과 같다:
 $$
 Q = H \times H + H \times V
 $$
+
+### 2.3 Parallel Training of Neural Networks
+![Parllel Training of Neural Networks](https://github.com/user-attachments/assets/9d3f014a-574d-4348-bfa7-ec283466a2fd)
+
+대규모 데이터셋에서 신경망 모델을 학습하기 위해, Google에서는 **DistBelief**라는 대규모 분산 학습 프레임워크를 도입했다.
+
+- 이 프레임워크는 **동일한 모델의 복제본(replica)**을 여러 개 병렬로 실행할 수 있도록 하며,  
+  각 복제본은 **중앙 서버와 파라미터를 동기화**한다.
+- 병렬 학습은 **미니배치 비동기적 확률적 경사하강법(mini-batch asynchronous SGD)**과  
+  **적응형 학습률(Adagrad)** 알고리즘을 사용한다.
+
