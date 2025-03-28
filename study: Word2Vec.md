@@ -101,14 +101,14 @@ $$
 - \( D \): 벡터 차원
 - \( V \): 어휘 크기
 
----
-
-**NNLM vs CBOW**
+#### **NNLM vs CBOW**
 
 | 구분       | 공통점                      | 차이점 |
 |------------|-----------------------------|--------|
 | **NNLM**   | 단어 벡터 1개 예측          | **이전 단어들만** 사용해 다음 단어 예측 |
 | **CBOW**   | 단어 벡터 1개 예측          | **양방향 문맥 단어들**로 중심 단어 예측 |
+
+---
 
 ### 3.2 Continuous Skip-gram Model
 ![Skip-gram](https://github.com/user-attachments/assets/a5d83952-22c0-445b-90ae-8ce92fc74c30)
