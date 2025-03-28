@@ -60,3 +60,17 @@ $$
 - 병렬 학습은 **미니배치 비동기적 확률적 경사하강법(mini-batch asynchronous SGD)**과  
   **적응형 학습률(Adagrad)** 알고리즘을 사용한다.
 
+## 3. New Log-linear Models
+
+이 절에서는 **계산 복잡도를 최소화**하면서 **분산 단어 표현(distributed word representations)**을 학습할 수 있는  
+두 가지 **새로운 모델 구조**를 제안한다.
+
+이전 장에서 살펴본 주요 관찰은, 대부분의 **계산 복잡도**가 **non-linear hidden layer**에서 발생한다는 점이다.  
+이러한 비선형층은 신경망의 강점이기도 하지만, 본 논문에서는 단어를 정밀하게 표현하는 능력이 약간 떨어지더라도  
+훨씬 더 **많은 데이터에 대해 효율적으로 학습**할 수 있는 **단순한 모델**을 탐색한다.
+
+핵심 아이디어는 다음과 같다:
+
+1. **연속적인 word vector**는 **단순한 모델**을 이용하여 학습한다.
+2. 그 위에 **N-gram NNLM**은 그렇게 학습된 word vector들을 바탕으로 학습을 진행한다.
+![New Log-linear Models](https://github.com/user-attachments/assets/6d9e5432-8c8c-480b-af9e-56a1a0bb09bd)
