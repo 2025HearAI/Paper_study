@@ -9,3 +9,68 @@
 ## 1. Abstract
 
 MobileNetV3는 하드웨어 인지형 신경망 아키텍처 검색(Network Architecture Search, NAS)과 기존의 NetAdapt 알고리즘을 결합하여 설계된 고효율 모바일 신경망 모델이다. 이 논문에서는 고성능 모바일 기기에서 사용할 수 있는 두 가지 모델(MobileNetV3-Large, MobileNetV3-Small)을 제안하며, 분류, 객체 탐지, 의미 분할 등 다양한 컴퓨터 비전 과제에서 기존 모델 대비 향상된 정확도 및 처리 속도를 보여준다.
+
+## 2. Efficient Mobile Building Blocks
+
+MobileNet 시리즈는 모바일 환경에서의 효율적인 연산을 목표로 지속적으로 개선되어 왔다. MobileNetV3는 이러한 발전의 흐름 속에서 등장한 모델로, 이전 세대의 구조적 장점을 계승하고 새로운 기법을 결합하여 더욱 효율적인 블록 구조를 완성했다. 이 절에서는 MobileNetV1부터 V3까지의 핵심 빌딩 블록과 그 발전 과정을 정리하고, MobileNetV3에서 최종적으로 사용된 구성 요소들을 설명한다.
+
+---
+
+### 2.1 MobileNetV1
+
+MobileNetV1은 경량 신경망 구조를 위해 depthwise separable convolution을 도입하였다. 이는 전통적인 convolution을 두 단계로 분해하여 계산량을 획기적으로 줄이는 방식이다.
+
+- **구성**: Depthwise convolution → Pointwise (1×1) convolution  
+- **장점**: 연산량 및 파라미터 수 감소 (예: 기존 Conv 대비 약 8~9배 적은 연산량)  
+- **한계**: 구조는 단순하지만 표현력이 제한적이며, 이후 세대에서 보완됨
+
+---
+
+### 2.2 MobileNetV2
+![mobilenetv2](https://github.com/user-attachments/assets/8d8d2352-1ae8-434c-8b67-8f3619574856)
+
+MobileNetV2는 V1의 구조를 기반으로 inverted residual block과 linear bottleneck을 도입해 연산 효율성과 표현력을 동시에 개선하였다.
+
+- **핵심 구조**:
+  - Expansion: 채널 수를 확장 (1×1 Conv)
+  - Depthwise convolution: 공간 필터링
+  - Projection: 채널 수 축소 (1×1 Conv)
+  - Residual connection: 입력과 출력이 같은 경우 연결
+
+- **특징**:
+  - 비선형 활성 함수는 bottleneck 영역에는 사용하지 않음  
+  - 저차원 → 고차원 → 저차원으로 정보 흐름 구성  
+  - 연산 효율성과 정확도의 균형 유지
+
+---
+
+### 2.3 MnasNet
+
+MnasNet은 **플랫폼 인식형 NAS(Neural Architecture Search)**를 적용해 자동으로 효율적인 아키텍처를 탐색한 모델이다.
+
+- **핵심 기법**: Reinforcement Learning을 기반으로 한 RNN Controller 사용  
+- **구성 요소**:
+  - MobileNetV2 구조 기반
+  - Squeeze-and-Excitation(SE) 모듈 추가 → 채널 간 상호작용 강화
+
+- **특징**:
+  - 정확도와 지연 시간을 동시에 고려한 보상 함수 설계  
+  - 실제 하드웨어(Pixel 1)의 성능을 기준으로 최적화  
+
+---
+
+### 2.4 MobileNetV3
+![mobilenetv3](https://github.com/user-attachments/assets/12fdf005-d858-4b48-9037-35893050dd53)
+
+MobileNetV3는 앞선 세대들의 장점을 종합하면서 다음과 같은 개선 사항을 적용했다.
+
+- **하이브리드 구조**: MobileNetV2 블록 + MnasNet의 SE 모듈 + 새로운 비선형 함수  
+- **활성 함수 개선**:
+  - Swish 대신 계산량이 적은 Hard-Swish(h-swish) 사용  
+  - Sigmoid → Hard-Sigmoid로 대체하여 정수 연산 친화적으로 개선
+
+- **SE 모듈 위치 변경**: ResNet 스타일 대신, expansion 영역 이후에 배치하여 효율 증가  
+
+- **최종 구조**:
+  - MobileNetV3-Large: 고성능 모바일 환경  
+  - MobileNetV3-Small: 경량 디바이스 및 IoT 환경
