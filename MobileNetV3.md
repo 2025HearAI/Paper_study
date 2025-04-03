@@ -149,7 +149,7 @@ MobileNetV3는 자동 아키텍처 탐색 결과를 그대로 사용하는 것�
 Swish 함수는 정확도는 높지만 sigmoid 연산 비용이 크다. 이를 해결하기 위해 MobileNetV3에서는 **Hard-Swish (h-swish)** 함수가 사용되었다.
 
 - **Hard-Swish 정의**
-  `h-swish(x) = x * ReLU6(x + 3) / 6`
+  ![h-swish (Hard-Swish)](https://github.com/user-attachments/assets/efadab8b-3337-483f-863a-fc8fe6eb1048)
 
 - **장점**
   - 정수 연산 및 양자화에 유리
