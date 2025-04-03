@@ -74,3 +74,50 @@ MobileNetV3는 앞선 세대들의 장점을 종합하면서 다음과 같은 �
 - **최종 구조**:
   - MobileNetV3-Large: 고성능 모바일 환경  
   - MobileNetV3-Small: 경량 디바이스 및 IoT 환경
+
+## 3. Network Search
+
+MobileNetV3는 네트워크 구조의 설계를 자동화하기 위해 두 가지 아키텍처 탐색 기법을 활용한다. 하나는 전체 블록 수준에서의 Platform-Aware NAS이고, 다른 하나는 레이어 수준의 세밀한 조정을 위한 NetAdapt 알고리즘이다. 이 두 기법은 상호 보완적인 특성을 가지며, 함께 사용됨으로써 모바일 하드웨어에서의 정확도–지연 시간 트레이드오프를 최적화할 수 있다.
+
+---
+
+### 3.1 Platform-Aware NAS for Block-wise Search
+
+Platform-Aware NAS는 블록 단위로 네트워크의 전반적인 구조를 탐색하는 방식으로, 실제 모바일 기기에서의 연산 속도를 고려하여 설계된다.
+
+- **탐색 방식**:
+  - RNN 기반 컨트롤러 사용  
+  - MnasNet-A1 구조를 초기 시드 모델로 채택  
+
+- **보상 함수**:  
+  - 정확도와 지연 시간을 모두 고려한 다목적 함수  
+    - ![3 1-보상함수](https://github.com/user-attachments/assets/16954b3a-8a62-4b0a-a985-d5a914898cc2)
+    (단, \( w \)는 모델 규모에 따라 조정됨)
+
+- **Large vs. Small 모델 차이**:  
+  - Small 모델은 latency에 따라 정확도 변화폭이 크므로 weight 조정 필요  
+    → \( w = -0.15 \) (Large 모델에선 \( w = -0.07 \))
+
+이 기법을 통해 MobileNetV3의 초기 구조가 결정되며, 이후 세부 튜닝을 위해 NetAdapt이 적용된다.
+
+---
+
+### 3.2 NetAdapt for Layer-wise Search
+
+NetAdapt은 레이어별 필터 수를 미세 조정하여 전체 네트워크 구조를 더욱 정밀하게 최적화하는 알고리즘이다.
+
+- **절차**:
+  1. NAS로 생성된 시드 모델에서 시작  
+  2. 각 단계에서 latency를 일정 비율 줄이는 여러 후보 아키텍처 제안  
+  3. 기존 모델의 학습된 가중치를 재사용하며 빠르게 fine-tuning  
+  4. 정확도/지연 시간 비율이 가장 높은 후보 선택  
+  5. 목표 latency 도달 시까지 반복  
+
+- **선택 기준**:  
+  - ![3-2선택기준](https://github.com/user-attachments/assets/d93e1304-5695-46bd-bbd0-f44211f6bef8)
+
+- **하이퍼파라미터**:
+  - Fine-tuning step: 10,000  
+  - 최소 latency 감소량 \( \delta = 0.01 \times \text{현재 latency} \)
+
+이 기법은 각 레이어의 중요도와 성능 민감도를 고려해 모델의 연산 효율성을 극대화하는 데 기여한다.
