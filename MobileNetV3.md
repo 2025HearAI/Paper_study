@@ -118,7 +118,7 @@ NetAdapt은 레이어별 필터 수를 미세 조정하여 전체 네트워크 �
 
 - **하이퍼파라미터**:
   - Fine-tuning step: 10,000  
-  - 최소 latency 감소량 \( \delta = 0.01 \times \text{현재 latency} \)
+  - 최소 latency 감소량 ![최소 latency 감소량](https://github.com/user-attachments/assets/aa826b08-e4a5-4f83-8097-ec86a67181cf)
 
 이 기법은 각 레이어의 중요도와 성능 민감도를 고려해 모델의 연산 효율성을 극대화하는 데 기여한다.
 
